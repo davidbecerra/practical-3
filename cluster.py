@@ -66,17 +66,6 @@ def read_users():
       user_data[user] = user_vector
   return user_data
 
-def read_artists():
-  artist_file = 'artists.csv'
-
-  artist_data = {}
-  with open(artist_file, 'r') as artist_fh:
-    artist_csv = csv.reader(artist_fh, delimiter=',', quotechar='"')
-    next(artist_csv, None)
-    for row in artist_csv:
-      artistID = row[0]
-  return artist_data
-
 def read_artists_bin():
   artist_file = 'artists_bin.csv'
 
@@ -90,6 +79,8 @@ def read_artists_bin():
 
 def get_data():
   train_file = 'train.csv'
+  train_file_processed = 'train_procd.csv'
+  plays_file = 'plays.csv'
 
   print "Getting user data...",
   user_data = read_users()
@@ -98,31 +89,33 @@ def get_data():
   print len(user_data)
 
   print "Getting data from training file...",
-  train_data = []
   with open(train_file, 'r') as train_fh:
     train_csv = csv.reader(train_fh, delimiter=',', quotechar='"')
     next(train_csv, None)
-    for row in train_csv:
-      user    = row[0]
-      artist  = row[1].translate(None, '-')
-      plays   = row[2]
-      if user not in user_data:
-        print "ERROR: user not found."
-        exit()
-      datum = list(user_data[user])
-      datum += [int(artist, 16)]
-      datum.append(int(plays)) 
-      train_data.append(datum)
+    counter = 0
 
-  print "Done!"
-  print "Converting into numpy matrix...",
-  X = np.array(train_data)
-  print "Done!"
-  print X.shape
+    with open(train_file_processed, 'w') as train_procd_fh:
+      train_procd_csv = csv.writer(train_procd_fh, delimiter=',', quotechar='"',
+        quoting=csv.QUOTE_MINIMAL)
 
-def main():
-  get_data()
+      with open(plays_file, 'w') as plays_fh:
+        plays_csv = csv.writer(plays_fh, delimiter=',', quotechar='"',
+          quoting=csv.QUOTE_MINIMAL)
 
+        for row in train_csv:
+          counter += 1
+          user    = row[0]
+          artist  = row[1]
+          plays   = row[2]
 
-if __name__ == '__main__':
-  main()
+          if user not in user_data:
+            print "ERROR: user not found."
+            exit()
+
+          datum = user_data[user]
+          datum += artist_data[artist]
+          train_procd_csv.writerow(datum)
+          plays_csv.writerow([plays])
+
+          if counter%10000 == 0:
+            print "Row", counter

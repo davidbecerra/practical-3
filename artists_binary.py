@@ -1,6 +1,5 @@
 import numpy as np
 import csv
-from sklearn import preprocessing
 
 tag_file = 'artists_tags.csv'
 bin_file = 'artists_bin.csv'
