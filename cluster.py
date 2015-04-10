@@ -20,9 +20,9 @@ def vectorizeUser(sex, age, countryID):
   vector = []
   gender = []
   if sex is 'm':
-    gender = [1, 0]
+    gender = [1]
   else:
-    gender = [0, 1]
+    gender = [0]
   vector += gender
   vector += [age]
   vector += [countryID]
@@ -79,7 +79,7 @@ def read_artists_bin():
 
 def get_data():
   train_file = 'train.csv'
-  train_file_processed = 'train_procd.csv'
+  train_file_processed = 'train_procd_small.csv'
   plays_file = 'plays.csv'
 
   print "Getting user data...",
@@ -112,7 +112,7 @@ def get_data():
             print "ERROR: user not found."
             exit()
 
-          datum = user_data[user]
+          datum = list(user_data[user])
           datum += artist_data[artist]
           train_procd_csv.writerow(datum)
           plays_csv.writerow([plays])
