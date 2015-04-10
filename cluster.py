@@ -79,7 +79,7 @@ def read_artists_bin():
 
 def get_data():
   train_file = 'train.csv'
-  train_file_processed = 'train_procd_small.csv'
+  train_file_processed = 'train_procd_5.csv'
   plays_file = 'plays.csv'
 
   print "Getting user data...",

@@ -3,7 +3,7 @@ import csv
 
 tag_file = 'artists_tags.csv'
 bin_file = 'artists_bin.csv'
-num_tags = 50
+num_tags = 5
 
 # Write out test solutions.
 with open(tag_file, 'r') as tag_fh:
