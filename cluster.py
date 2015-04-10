@@ -147,8 +147,4 @@ def get_matrix():
       if counter%10000 == 0:
         print "Row", counter
 
-  return train_data
-
-if __name__ == "__main__":
-  X = get_matrix()
-  print len(X)
+  return train_data, plays_data
