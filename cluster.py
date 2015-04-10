@@ -178,17 +178,16 @@ def get_test_matrix():
 
     for row in test_csv:
       counter += 1
-      user    = row[0]
-      artist  = row[1]
-
+      Id      = row[0]
+      user    = row[1]
+      artist  = row[2]
       datum = list(user_data[user])
       datum += artist_data[artist]
       test_data += [datum]
 
       if counter%10000 == 0:
         print "Row", counter
-
-  return train_data
+  return test_data
 
 if __name__ == '__main__':
   X, plays = get_matrix()
