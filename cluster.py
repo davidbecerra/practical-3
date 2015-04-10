@@ -77,18 +77,28 @@ def read_artists():
       artistID = row[0]
   return artist_data
 
+def read_artists_bin():
+  artist_file = 'artists_bin.csv'
+
+  artist_data = {}
+  with open(artist_file, 'r') as artist_fh:
+    artist_csv = csv.reader(artist_fh, delimiter=',', quotechar='"')
+    next(artist_csv, None)
+    for row in artist_csv:
+      artist_data[row[0]] = row[1:]
+  return artist_data
+
 def get_data():
   train_file = 'train.csv'
 
   print "Getting user data...",
   user_data = read_users()
   print "Done!"
-  # artist_data = read_artists()
+  artist_data = read_artists_bin()
   print len(user_data)
 
   print "Getting data from training file...",
   train_data = []
-  # data = 0
   with open(train_file, 'r') as train_fh:
     train_csv = csv.reader(train_fh, delimiter=',', quotechar='"')
     next(train_csv, None)
