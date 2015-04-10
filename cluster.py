@@ -123,7 +123,6 @@ def get_matrix():
   user_data = read_users()
   print "Done!"
   artist_data = read_artists_bin()
-  print len(user_data)
 
   print "Getting data from training file..."
   with open(train_file, 'r') as train_fh:
@@ -148,3 +147,32 @@ def get_matrix():
         print "Row", counter
 
   return train_data, plays_data
+
+def get_test_matrix():
+  test_file = 'test.csv'
+
+  print "Getting user data...",
+  user_data = read_users()
+  print "Done!"
+  artist_data = read_artists_bin()
+
+  print "Getting data from test file..."
+  with open(test_file, 'r') as test_fh:
+    test_csv = csv.reader(test_fh, delimiter=',', quotechar='"')
+    next(test_csv, None)
+    counter = 0
+    test_data = []
+
+    for row in test_csv:
+      counter += 1
+      user    = row[0]
+      artist  = row[1]
+
+      datum = list(user_data[user])
+      datum += artist_data[artist]
+      test_data += [datum]
+
+      if counter%10000 == 0:
+        print "Row", counter
+
+  return train_data
