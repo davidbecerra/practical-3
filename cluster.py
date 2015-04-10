@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 from sklearn import preprocessing
-
+from sklearn.decomposition import PCA
 
 ## Given user params, returns a numpy vector representing this user
 def vectorizeUser(sex, age, countryID):
@@ -146,5 +146,28 @@ def get_matrix():
 
       if counter%10000 == 0:
         print "Row", counter
+  print "Done!"
 
   return train_data, plays_data
+
+def reduceMatrix(X):
+  if X.shape[1] <= 10: return X
+  pca = PCA(n_components=10)
+  X_transf = np.array(pca.fit_transform(X))
+  return X_transf
+
+def standardizeMatrix(X):
+  print "Standardizing matrix...",
+  X_standardize = preprocessing.scale(X, axis=0)
+  print "Done!"
+  return X_standardize
+
+if __name__ == '__main__':
+  X, plays = get_matrix()
+  X = np.array(X, dtype=int)
+  # X = standardizeMatrix(X)
+  # X = reduceMatrix(X)
+  print X.shape
+  # print X[0]
+  # print len(X)
+  
