@@ -30,7 +30,7 @@ feat_mat = np.array(cluster.get_matrix())
 kmeans = KMeans()
 fitted_model = kmeans.fit(feat_mat)
 test_data = np.array(proc_test.get_matrix())
-fitted_model.predict(test_data)
+results = fitted_model.predict(test_data)
 
 
 print results
