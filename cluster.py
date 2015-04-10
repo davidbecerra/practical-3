@@ -20,9 +20,9 @@ def vectorizeUser(sex, age, countryID):
   vector = []
   gender = []
   if sex is 'm':
-    gender = [1]
-  else:
     gender = [0]
+  else:
+    gender = [1]
   vector += gender
   vector += [age]
   vector += [countryID]
@@ -79,7 +79,7 @@ def read_artists_bin():
 
 def get_data():
   train_file = 'train.csv'
-  train_file_processed = 'train_procd_5.csv'
+  train_file_processed = 'train_procd.csv'
   plays_file = 'plays.csv'
 
   print "Getting user data...",
@@ -108,10 +108,6 @@ def get_data():
           artist  = row[1]
           plays   = row[2]
 
-          if user not in user_data:
-            print "ERROR: user not found."
-            exit()
-
           datum = list(user_data[user])
           datum += artist_data[artist]
           train_procd_csv.writerow(datum)
@@ -119,3 +115,40 @@ def get_data():
 
           if counter%10000 == 0:
             print "Row", counter
+
+def get_matrix():
+  train_file = 'train.csv'
+
+  print "Getting user data...",
+  user_data = read_users()
+  print "Done!"
+  artist_data = read_artists_bin()
+  print len(user_data)
+
+  print "Getting data from training file..."
+  with open(train_file, 'r') as train_fh:
+    train_csv = csv.reader(train_fh, delimiter=',', quotechar='"')
+    next(train_csv, None)
+    counter = 0
+    train_data = []
+    plays_data = []
+
+    for row in train_csv:
+      counter += 1
+      user    = row[0]
+      artist  = row[1]
+      plays   = row[2]
+
+      datum = list(user_data[user])
+      datum += artist_data[artist]
+      train_data += [datum]
+      plays_data += plays
+
+      if counter%10000 == 0:
+        print "Row", counter
+
+  return train_data
+
+if __name__ == "__main__":
+  X = get_matrix()
+  print len(X)
