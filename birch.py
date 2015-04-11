@@ -3,7 +3,7 @@ from sklearn.cluster import Birch
 import cluster
 import csv
 
-clusters = 5
+clusters = 20
 submit_file = 'submit_birch.csv'
 
 X, plays = cluster.get_matrix()
@@ -17,15 +17,24 @@ labels = brc.fit_predict(X)
 print "Done!"
 
 print labels
-plays_sums = [0] * clusters 
-cluster_size = [0] * clusters
+# plays_sums = [0] * clusters 
+# cluster_size = [0] * clusters
+plays_sums = {}
 
+# Median
 for idx, label in enumerate(labels):
-  plays_sums[label] += plays[idx]
-  cluster_size[label] += 1
+  if label in plays_sums:
+    plays_sums[label].append(plays[idx])
+  else:
+    plays_sums[label] = [plays[idx]]
+  # cluster_size[label] += 1
 
-for idx, size in enumerate(cluster_size):
-  plays_sums[idx] /= size
+for label in plays_sums:
+  median = np.median(np.array(plays_sums[label]))
+  plays_sums[label] = median
+  
+# for idx, size in enumerate(cluster_size):
+  # plays_sums[idx] /= size
 
 Y = cluster.get_test_matrix()
 # print len(Y)
